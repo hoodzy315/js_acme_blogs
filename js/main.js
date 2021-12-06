@@ -305,4 +305,4 @@ function initApp(){
     menu.addEventListener('change', function(e) { selectMenuChangeEventHandler(e)});
 }
 
-document.addEventListener('DOMContentLoaded', function() {initApp()});
+document.addEventListener('DOMContentLoaded', function () {initApp()});
