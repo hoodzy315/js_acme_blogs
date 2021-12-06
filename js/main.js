@@ -1,3 +1,11 @@
+/*Joe Woods
+12/6/2021
+*/
+
+/*This function creates an element
+three parameters, type of element, content and classname
+returns element
+*/
 function createElemWithText(elemType = "p", textContent = "", className){
     const myElem = document.createElement(elemType);
     myElem.textContent = textContent;
@@ -5,6 +13,9 @@ function createElemWithText(elemType = "p", textContent = "", className){
     return myElem;
 }
 
+/*This function takes in json data and creates the select menu
+returns array of id and name
+*/
 function createSelectOptions(jsonData){
     if(!jsonData) return undefined;
     let optionArray = [];
@@ -18,6 +29,10 @@ function createSelectOptions(jsonData){
     return optionArray;
 }
 
+/*This function hides or shows the comment section
+parameter of post id
+returns the post to hide, null if post is not found, undefined if postId is not correctly sent in
+*/
 function toggleCommentSection(postId){
     if(!postId) return undefined;
     const postToHide = document.querySelector(`section[data-post-id='${postId}']`);
@@ -29,6 +44,10 @@ function toggleCommentSection(postId){
     return null;
 }
 
+/*This function toggles the show comment button
+parameter of post Id
+returns the button, or null if the button does not exist, undefined if postId does not exist
+*/
 function toggleCommentButton(postId){
     if(!postId) return undefined;
     const comBut = document.querySelector(`button[data-post-id='${postId}']`);
@@ -37,6 +56,9 @@ function toggleCommentButton(postId){
     return comBut;
 }
 
+/*This function deletes all children of an element
+returns the parent back, undefined if the parent is not an element
+*/
 function deleteChildElements(parentElement){
     if(!parentElement?.tagName) return undefined;
     let child = parentElement.lastElementChild;
@@ -47,6 +69,9 @@ function deleteChildElements(parentElement){
     return parentElement;
 }
 
+/*This function adds a listener to all buttons in main
+returns buttons object
+*/
 function addButtonListeners(){
     const getMain = document.querySelector('main');
     const buttons = getMain.querySelectorAll('button');
@@ -60,6 +85,10 @@ function addButtonListeners(){
     return buttons;
 }
 
+
+/*This function removes listener from all buttons in main
+returns buttons object
+*/
 function removeButtonListeners(){
     const getMain = document.querySelector('main');
     const buttons = getMain.querySelectorAll('button');
@@ -73,6 +102,11 @@ function removeButtonListeners(){
     return buttons;
 }
 
+/*This function creates a fragment, article, h3, and two paragraphs
+appends h3 and paragraphs to article
+requires the jsonData for posts
+returns a fragment with article appended
+*/
 function createComments(jsonData){
     if(!jsonData) return undefined;
     const fragment = document.createDocumentFragment();
@@ -90,6 +124,10 @@ function createComments(jsonData){
     return fragment;
 }
 
+/*This function fills out the select menu
+requires jsonData sent in
+returns selectMenu
+*/
 function populateSelectMenu(jsonData){
     if(!jsonData) return undefined;
     const selectMenu = document.getElementById('selectMenu');
@@ -100,6 +138,9 @@ function populateSelectMenu(jsonData){
     return selectMenu;
 }
 
+/*This function pulls user data from website listing users
+returns error if data is not good, or json data of users
+*/
 const getUsers = async () => {
     try{
         const res = await fetch("https://jsonplaceholder.typicode.com/users");
@@ -112,6 +153,9 @@ const getUsers = async () => {
     }
 }
 
+/*This function fetches post data with supplied user ID parameter
+returns error if data is no good, or json data
+*/
 const getUserPosts = async (userId) => {
     if(!userId) return undefined;
     try{
@@ -123,6 +167,9 @@ const getUserPosts = async (userId) => {
     }
 }
 
+/*This function finds a user with userID parameter
+returns user information or error if data is not good
+*/
 const getUser = async (userId) => {
     if(!userId) return undefined;
     try{
@@ -134,6 +181,10 @@ const getUser = async (userId) => {
     }
 }
 
+
+/*This function finds post comments with postID parameter
+returns jsondata of posts or error if data is not good
+*/
 const getPostComments = async (postId) => {
     if(!postId) return undefined;
     try{
@@ -145,6 +196,9 @@ const getPostComments = async (postId) => {
     }
 }
 
+/*This function posts comments based on postId
+appends commends to a fragment and section
+*/
 const displayComments = async (postId) => {
     if(!postId) return undefined;
     const section = document.createElement("SECTION");
@@ -156,6 +210,10 @@ const displayComments = async (postId) => {
     return section;
 }
 
+/*This function creates posts based on jsonData parameter
+creates an article, an h2, four paragraphs and a fragment and appends them all to the fragment
+returns fragment
+*/
 const createPosts = async (jsonData) => {
     if(!jsonData) return undefined;
     const fragment = document.createDocumentFragment();
@@ -182,6 +240,9 @@ const createPosts = async (jsonData) => {
     return fragment;
 }
 
+/*This function displays posts by adding element to main section
+uses createPosts
+*/
 const displayPosts = async (posts) => {
     const getMain = document.querySelector('main');
     const element = (posts?.length) ? await createPosts(posts) : createElemWithText('p', "Select an Employee to display their posts.", 'default-text');
@@ -189,6 +250,10 @@ const displayPosts = async (posts) => {
     return element;
 }
 
+/*This function dtoggles comments on and off
+uses toggleCommentSection and toggleCommentButton
+returns array of comment section and comment button
+*/
 function toggleComments(event, postId){
     if(!event && !postId) return undefined;
     const com = document.querySelector(`button[data-post-id='${postId}']`);
@@ -199,6 +264,10 @@ function toggleComments(event, postId){
     return tc;
 }
 
+/*This function refreshes posts
+uses removeButtonListeners, deleteChildElements, displayPosts and addButtonListeners
+returns an array with the result of all four functions
+*/
 const refreshPosts = async (posts) => {
     if(!posts?.length) return undefined;
     let rp = [];
@@ -209,6 +278,10 @@ const refreshPosts = async (posts) => {
     return rp;
 }
 
+/*This function updates the menu when there is a change in it
+uses getUserPosts and refreshPosts
+returns an array with the userId, posts and data from refreshPosts
+*/
 const selectMenuChangeEventHandler = async (event) => {
     const userId = event?.target?.value || 1;
     const mceh = [];
