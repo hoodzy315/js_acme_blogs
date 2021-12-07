@@ -302,7 +302,7 @@ const initPage = async () => {
 function initApp(){
     initPage();
     const menu = document.getElementById('selectMenu');
-    menu.addEventListener('change', function(e) { selectMenuChangeEventHandler(e)});
+    menu.addEventListener('change', selectMenuChangeEventHandler);
 }
 
-document.addEventListener('DOMContentLoaded', function () {initApp()});
+document.addEventListener('DOMContentLoaded', initApp);
