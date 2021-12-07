@@ -23,7 +23,6 @@ function createSelectOptions(jsonData){
         let theOption = document.createElement("OPTION");
         theOption.value = jsonData[x].id;
         theOption.textContent = jsonData[x].name;
-        console.log(theOption.textContent);
         optionArray.push(theOption);
     }
     return optionArray;
@@ -133,7 +132,7 @@ function populateSelectMenu(jsonData){
     const selectMenu = document.getElementById('selectMenu');
     const users = createSelectOptions(jsonData);
     for(var i = 0; i < users.length; i++){
-        selectMenu.append(users[i].textConent);
+        selectMenu.appendChild(users[i]);
     }
     return selectMenu;
 }
@@ -256,8 +255,7 @@ returns array of comment section and comment button
 */
 function toggleComments(event, postId){
     if(!event && !postId) return undefined;
-    const com = document.querySelector(`button[data-post-id='${postId}']`);
-    com.textContent = (com.textContent == 'Show Comments') ? event.target.listener = false : event.target.listener = true;
+    event.target.listener = true;
     const tc = [];
     tc.push(toggleCommentSection(postId));
     tc.push(toggleCommentButton(postId));
@@ -283,12 +281,10 @@ uses getUserPosts and refreshPosts
 returns an array with the userId, posts and data from refreshPosts
 */
 const selectMenuChangeEventHandler = async (event) => {
-    const userId = event?.target?.value || 1;
     const mceh = [];
-    mceh.push(userId);
-    const posts = await getUserPosts(userId);
-    mceh.push(posts);
-    mceh.push(await refreshPosts(posts));
+    mceh.push(event?.target?.value || 1);
+    mceh.push(await getUserPosts(mceh[0]));
+    mceh.push(await refreshPosts(mceh[1]));
     return mceh;
 }
 
